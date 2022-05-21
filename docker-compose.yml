@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  # NOTE: spgdb is referenced by psloader
+  spgdb:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_PASSWORD=postgres
+  web:
+    build: .
+    command: python moftspg/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - spgdb
